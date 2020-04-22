@@ -54,6 +54,7 @@ main {
     height: 500px;
     background: url('../images/back_field.png');
     margin: 0 auto;
+    overflow: hidden;
 }
 .text-field {
     background: rgba(255, 255, 255, .7);
@@ -78,4 +79,51 @@ main {
 .score-field {
     font-size: 42px;
     padding: 30px 0;
+}
+#tetris-field {
+    width: 270px;
+    height: 450px;
+    margin: 25px 18px;
+}
+.white {
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    border-radius: 100%;
+    float: left;
+}
+.orange {
+    width: 30px;
+    height: 30px;
+    background: orange;
+    border-radius: 100%;
+    float: left;
+}
+.airbus {
+    width: 30px;
+    height: 30px;
+    background: #48a9c5;
+    border-radius: 100%;
+    float: left;
+}
+.airbus2 {
+    width: 30px;
+    height: 30px;
+    background: #fe5000;
+    border-radius: 100%;
+    float: left;
+}
+.alcon {
+    width: 30px;
+    height: 30px;
+    background: #49a94a;
+    border-radius: 100%;
+    float: left;
+}
+.algonia {
+    width: 30px;
+    height: 30px;
+    background: #8e43e7;
+    border-radius: 100%;
+    float: left;
 }
