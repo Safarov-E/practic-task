@@ -48,27 +48,97 @@ window.onload = function() {
         tetris[0][0] = randomInteger(0, color.length);
     }
     function run() {
+        timer = setTimeout(function(){
+            draw();
+            flag = true;
+            for (let i = tetris.length - 1; i >= 0; i--) {
+                for(let j = 0; j < tetris[i].length; j++) {
+                    if(tetris[i][j] < 10) {
+                        if(tetris[i][j] != 0) {
+                            if(i == tetris.length - 1) {
+                                tetris[i][j] = tetris[i][j]+10;
+                            } else if(tetris[i+1][j] == 0) {
+                                tetris[i+1][j] = tetris[i][j];
+                                tetris[i][j] = 0;
+                                flag = false;
+                            }
+                        }
+                    }
+                }
+            }
+            checkLine();
+            if(flag) square();
+            run();
+        }, 400)
+    }
+    function tetrisRight() {
+        for (let i = tetris.length - 1; i >= 0; i--) {
+            for(let j = tetris[i].length - 1; j >= 0; j--) {
+                if(tetris[i][j] < 10) {
+                    if(tetris[i][j] != 0 && tetris[i][j + 1] == 0) {
+                        tetris[i][j+1] = tetris[i][j];
+                        tetris[i][j] = 0;
+                    }
+                }
+            }
+        }
         draw();
-        flag = true;
+    }
+    function tetrisLeft() {
         for (let i = tetris.length - 1; i >= 0; i--) {
             for(let j = 0; j < tetris[i].length; j++) {
                 if(tetris[i][j] < 10) {
-                    if(tetris[i][j] != 0) {
-                        if(i == tetris.length - 1) {
-                            tetris[i][j] = tetris[i][j]+10;
-                        } else if(tetris[i+1][j] == 0) {
-                            tetris[i+1][j] = tetris[i][j];
-                            tetris[i][j] = 0;
-                            flag = false;
+                    if(tetris[i][j] != 0 && tetris[i][j - 1] == 0) {
+                        tetris[i][j-1] = tetris[i][j];
+                        tetris[i][j] = 0;
+                    }
+                }
+            }
+        }
+        draw();
+    }
+    function checkLine() {
+        for (let i = tetris.length - 1; i >= 0; i--) {
+            for(let j = 0; j < tetris[i].length; j++) {
+                if(tetris[i][j]>10 && tetris[i][j+1] != undefined && tetris[i][j+2]!= undefined) {
+                    if(tetris[i][j] == tetris[i][j+1] && tetris[i][j] == tetris[i][j+2]) {
+                        tetris[i][j] = 0;
+                        tetris[i][j+1] = 0;
+                        tetris[i][j+2] = 0;
+                        score += 30;
+                        for(let m = i; m >= 0; m--) {
+                            if(tetris[m][j] > 10) tetris[m][j] = tetris[m][j] - 10;
+                            if(tetris[m][j+1] > 10) tetris[m][j+1] = tetris[m][j+1] - 10;
+                            if(tetris[m][j+2] > 10) tetris[m][j+2] = tetris[m][j+2] - 10;
                         }
                     }
                 }
             }
         }
-        if(flag) square();
+    }
+    function finish() {
+        let stop = false;
+        for (let i = tetris.length - 1; i >= 0; i--) {
+            for(let j = 0; j < tetris[i].length; j++) {
+                stop = true;
+                for(let k = 0; k < tetris.length; k++) {
+                    if(tetris[k][j] == 0)
+                }
+            }
+        }
     }
     init();
     draw();
     square();
     document.querySelector('.start').onclick = run;
+    document.onkeydown = function(event) {
+        switch(event.code) {
+            case "ArrowRight":
+                tetrisRight();
+                break;
+            case "ArrowLeft":
+                tetrisLeft();
+                break;
+        }
+    }
 }
