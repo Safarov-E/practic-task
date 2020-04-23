@@ -2,22 +2,25 @@ window.onload = function () {
     let tetris = [];
     let tetrisField = document.querySelector('#tetris-field');
     let scoreField = document.querySelector('.score-field');
-    let color = [1, 2, 3, 4, 5];
+    let color = [1, 2, 3, 4, 5]; // кол-во цветов фишек
     let timer;
     let score = 0;
-    let flag;
+    let flag; // проверка когда запускать след. блок
 
+    // заполняем массив
     function init() {
         let x = 9;
         let y = 15;
         for (let i = 0; i < y; i++) {
             tetris[i] = [];
             for (let j = 0; j < x; j++) {
-                tetris[i][j] = 0;
+                tetris[i][j] = 0; // 0 - пустое поле!!!!
             }
         }
+        //console.table(tetris);
     }
-    
+
+    //рисуем игровое поле
     function draw() {
         let out = '';
         for (let i = 0; i < tetris.length; i++) {
@@ -42,11 +45,11 @@ window.onload = function () {
                 }
             }
         }
-        tetrisField.innerHTML = out;
-        scoreField.innerHTML = score;
-        console.log(tetris);
+        tetrisField.innerHTML = out; // перерисовываю игровое поле
+        scoreField.innerHTML = score; // вывожу очки!
     }
 
+    // рисуем игровой блок
     function square() {
         function randomInteger(min, max) {
             var rand = min + Math.random() * (max + 1 - min);
@@ -54,7 +57,6 @@ window.onload = function () {
             return rand;
         }
         tetris[0][0] = randomInteger(0, color.length);
-        console.log(tetris[0][0]);
     }
 
     function run() {
@@ -88,7 +90,7 @@ window.onload = function () {
             checkLine();
             if (flag) square();
             run();
-        }, 200);
+        }, 10);
     }
 
     function tetrisRight() {
@@ -103,6 +105,7 @@ window.onload = function () {
             }
         }
         draw();
+        return false;
     }
 
     function tetrisLeft() {
@@ -117,6 +120,7 @@ window.onload = function () {
             }
         }
         draw();
+        return false;
     }
 
     function checkLine() {
@@ -158,8 +162,36 @@ window.onload = function () {
             }
             if (stop) break;
         }
+        if (stop) createForm();
         return stop;
     }
+
+    function createForm() {
+        let form = document.createElement('form');
+        form.innerHTML = '<h3 class="text-center">Поделиться результатом!</h3>';
+        form.setAttribute('method', 'POST');
+        form.setAttribute('action', 'send.php');
+        let hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'score');
+        hiddenInput.setAttribute('value', score);
+        let nameInput = document.createElement('input');
+        nameInput.setAttribute('type', 'text');
+        nameInput.setAttribute('name', 'username');
+        let submitInput = document.createElement('input');
+        submitInput.setAttribute('type', 'submit');
+        submitInput.setAttribute('value', 'Send Result');
+        form.appendChild(hiddenInput);
+        form.appendChild(nameInput);
+        form.appendChild(submitInput);
+        document.querySelector('.form').appendChild(form);
+        // form.onsubmit = removeForm;
+    }
+
+    // function removeForm() {
+    //     let form = document.querySelector('.form form');
+    //     document.querySelector('.form').removeChild(form);
+    // }
 
 
 
@@ -170,15 +202,9 @@ window.onload = function () {
         run();
     };
     document.onkeydown = function (event) {
-        switch (event.code) {
-            case "ArrowRight":
-                tetrisRight();
-                break;
-            case "ArrowLeft":
-                tetrisLeft();
-                break;
-        }
-        return false;
+        if (event.code == "ArrowDown") createForm();
+        if (event.code == "ArrowLeft") tetrisLeft();
+        if (event.code == "ArrowRight") tetrisRight();
     }
 
 }
